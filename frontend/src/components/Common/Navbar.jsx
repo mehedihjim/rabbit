@@ -65,6 +65,15 @@ const Navbar = () => {
                         <IoMdClose className="text-gray-600 w-6 h-6" />
                     </button>
                 </div>
+                <div className="p-4">
+                    <h2 className='text-xl font-semibold mb-4'>Menu</h2>
+                    <nav className='space-y-4'>
+                        <Link to='/' className='block text-gray-600 hover:text-black' onClick={toggleNavDrawer}>Men</Link>
+                        <Link to='/' className='block text-gray-600 hover:text-black' onClick={toggleNavDrawer}>Women</Link>
+                        <Link to='/' className='block text-gray-600 hover:text-black' onClick={toggleNavDrawer}>Top Wear</Link>
+                        <Link to='/' className='block text-gray-600 hover:text-black' onClick={toggleNavDrawer}>Bottom Wear</Link>
+                    </nav>
+                </div>
             </div>
         </>
     )
