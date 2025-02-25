@@ -6,7 +6,9 @@ const UserLayout = () => {
     return (
         <>
             <Header />
-            {/* Main section */}
+            <div className="py-6">
+                Main Content
+            </div>
             <Footer />
         </>
     )
