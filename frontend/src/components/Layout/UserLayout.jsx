@@ -1,14 +1,15 @@
 import React from 'react'
 import Header from '../Common/Header'
 import Footer from '../Common/Footer'
+import { Outlet } from 'react-router'
 
 const UserLayout = () => {
     return (
         <>
             <Header />
-            <div className="py-6">
-                Main Content
-            </div>
+            <main>
+                <Outlet />
+            </main>
             <Footer />
         </>
     )

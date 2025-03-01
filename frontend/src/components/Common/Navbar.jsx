@@ -7,13 +7,13 @@ import { IoMdClose } from 'react-icons/io';
 
 const Navbar = () => {
 
-    // cart drawer fun
+    // cart drawer function
     const [drawerOpen, setDrawerOpen] = useState(false)
     const toggleCartDrawer = () => {
         setDrawerOpen(!drawerOpen)
     }
 
-    // mobile nav drawer fun
+    // mobile nav drawer function
     const [navDrawerOpen, setNavDrawerOpen] = useState(false)
     const toggleNavDrawer = () => {
         setNavDrawerOpen(!navDrawerOpen)
