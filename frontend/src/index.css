@@ -1,11 +1,21 @@
 @import "tailwindcss";
 
 @theme {
-  --color-rabbit-red: #00004B;
+  --color-rabbit-red: #00004b;
 }
 
 #root {
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
+}
+
+/* ==========New Arrival Scrollbar========== */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
