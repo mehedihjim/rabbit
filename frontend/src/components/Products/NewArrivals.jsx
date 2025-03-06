@@ -138,12 +138,12 @@ const NewArrivals = () => {
       setCanScrollRight(rightScrollable);
     }
 
-    console.log({
-      scrollLeft: container.scrollLeft,
-      clientWidth: container.clientWidth,
-      containerScrollWidth: container.scrollWitdth,
-      offsetLeft: scrollRef.current.offsetLeft,
-    });
+    // console.log({
+    //   scrollLeft: container.scrollLeft,
+    //   clientWidth: container.clientWidth,
+    //   containerScrollWidth: container.scrollWitdth,
+    //   offsetLeft: scrollRef.current.offsetLeft,
+    // });
   };
 
   useEffect(() => {
@@ -208,7 +208,7 @@ const NewArrivals = () => {
               className="w-full h-[500px] object-cover rounded-lg"
               draggable="false"
             />
-            <div className="absolute bottom-4 left-4 right-0 bg-opacity-50 backdrop-blur-md w-[60%] text-white p-4 ">
+            <div className="absolute bottom-4 left-4 right-0 bg-opacity-50 bg-white w-[60%] text-black p-4 ">
               <Link to={`/product/${product._id}`} className="block">
                 <h4 className="font-medium underline">{product.name}</h4>
                 <p className="mt-1 $">${product.price}</p>
