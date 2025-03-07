@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const selectedProduct = {
   name: "Stylish Jacket",
@@ -24,18 +24,29 @@ const selectedProduct = {
 
 const ProductDetails = () => {
   const [mainImage, setMainImage] = useState("");
+  const [selectedSize, setSelectedSize] = useState("");
+  const [selectedColor, setSelectedColor] = useState("");
+  const [quantity, setQuantity] = useState(1);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
+  useEffect(() => {
+    if (selectedProduct?.images?.length > 0) {
+      setMainImage(selectedProduct.images[0].url);
+    }
+  }, [selectedProduct]);
 
   return (
     <div className="p-6 ">
       <div className="max-w-6xl mx-auto bg-white p-8 rounded-lg">
         <div className="flex flex-col md:flex-row">
-          {/* Left Thumbnails */}
+          {/* =============Left Thumbnails============= */}
           <div className="hidden md:flex flex-col space-y-4 mr-6">
-            {selectedProduct.images.map((images, index) => (
+            {selectedProduct.images.map((image, index) => (
               <img
                 key={index}
-                src={images.url}
-                alt={images.altText || `Thumbnail ${index}`}
+                onClick={() => setMainImage(image.url)}
+                src={image.url}
+                alt={image.altText || `Thumbnail ${index}`}
                 className="w-20 h-20 object-cover rounded-lg cursor-pointer border-gray-400"
               />
             ))}
@@ -44,7 +55,7 @@ const ProductDetails = () => {
           <div className="md:w-1/2">
             <div className="mb-4">
               <img
-                src={selectedProduct.images[0]?.url}
+                src={mainImage}
                 alt="Main Product"
                 className="w-full h-auto object-cover rounded-lg"
               />
@@ -58,7 +69,7 @@ const ProductDetails = () => {
                 src={images.url}
                 alt={images.altText || `Thumbnail ${index}`}
                 className="w-20 h-20 object-cover rounded-lg cursor-pointer border-gray-400"
-                onClick={setMainImage(images.url)}
+                onClick={() => setMainImage(images.url)}
               />
             ))}
           </div>
@@ -78,11 +89,17 @@ const ProductDetails = () => {
             <p className="text-gray-600 mb-4">{selectedProduct.description}</p>
             <div className="mb-4">
               <p className="text-gray-700">Color:</p>
+              {/* ====Colors Button==== */}
               <div className="flex gap-2 mt-2">
                 {selectedProduct.colors.map((color) => (
                   <button
                     key={color}
-                    className="cursor-pointer w-8 h-8 rounded-full border border-gray-400"
+                    onClick={() => setSelectedColor(color)}
+                    className={`cursor-pointer w-8 h-8 rounded-full border ${
+                      selectedColor === color
+                        ? "border-4 border-rabbit-red"
+                        : "border-gray-400"
+                    }`}
                     style={{
                       backgroundColor: color.toLocaleLowerCase(),
                       filter: "brightness(0.5)",
@@ -98,8 +115,13 @@ const ProductDetails = () => {
                 {selectedProduct.sizes.map((size) => (
                   <button
                     key={size}
-                    className="px-4 py-2 rounded border border-gray-400"
-                  ></button>
+                    onClick={() => setSelectedSize(size)}
+                    className={`cursor-pointer px-4 py-2 rounded border border-gray-300 ${
+                      selectedSize === size ? "bg-black text-white" : ""
+                    }`}
+                  >
+                    {size}
+                  </button>
                 ))}
               </div>
             </div>
@@ -109,7 +131,7 @@ const ProductDetails = () => {
                 <button className="px-2 py-1 bg-gray-200 rounded text-lg ">
                   -
                 </button>
-                <span className="text-lg">1</span>
+                <span className="text-lg">{quantity}</span>
                 <button className="px-2 py-1 bg-gray-200 rounded text-lg ">
                   +
                 </button>
