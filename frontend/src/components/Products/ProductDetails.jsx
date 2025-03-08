@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const selectedProduct = {
   name: "Stylish Jacket",
@@ -34,6 +35,34 @@ const ProductDetails = () => {
       setMainImage(selectedProduct.images[0].url);
     }
   }, [selectedProduct]);
+
+  const handleQuantityChange = (action) => {
+    if (action === "plus") {
+      setQuantity((prev) => prev + 1);
+    }
+    if (action === "minus" && quantity > 1) {
+      setQuantity((prev) => prev - 1);
+    }
+  };
+
+  const handleAddToCart = () => {
+    if (!selectedColor || !selectedSize) {
+      toast.error("Please choose a color and size before adding it to cart"),
+        {
+          duration: 1000,
+        };
+      return;
+    }
+
+    setIsButtonDisabled(true);
+
+    setTimeout(() => {
+      toast.success("Product added to cart", {
+        duration: 1000,
+      });
+      setIsButtonDisabled(false);
+    }, 500);
+  };
 
   return (
     <div className="p-6 ">
@@ -128,16 +157,25 @@ const ProductDetails = () => {
             <div className="mb-6">
               <p className="text-gray-700"></p>
               <div className="flex items-center space-x-4 mt-2">
-                <button className="px-2 py-1 bg-gray-200 rounded text-lg ">
+                <button
+                  onClick={() => handleQuantityChange("minus")}
+                  className="cursor-pointer px-2 py-1 bg-gray-200 rounded text-lg "
+                >
                   -
                 </button>
                 <span className="text-lg">{quantity}</span>
-                <button className="px-2 py-1 bg-gray-200 rounded text-lg ">
+                <button
+                  onClick={() => handleQuantityChange("plus")}
+                  className="cursor-pointer px-2 py-1 bg-gray-200 rounded text-lg "
+                >
                   +
                 </button>
               </div>
             </div>
-            <button className="cursor-pointer bg-black text-white py-2 px-6 rounded w-full mb-4">
+            <button
+              onClick={handleAddToCart}
+              className="cursor-pointer bg-black text-white py-2 px-6 rounded w-full mb-4"
+            >
               ADD TO CART
             </button>
             <div className="mt-10 text-gray-700">
