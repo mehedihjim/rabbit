@@ -4,6 +4,7 @@ import GenderCollection from "../components/Products/GenderCollection";
 import NewArrivals from "../components/Products/NewArrivals";
 import ProductDetails from "../components/Products/ProductDetails";
 import ProductGrid from "../components/Products/ProductGrid";
+import FeaturedCollecton from "../components/Products/FeaturedCollecton";
 
 const placeholderProducts = [
   {
@@ -66,13 +67,16 @@ const Home = () => {
       {/* =======Best Seller======= */}
       <h2 className="text-3xl text-center font-bold mb-4">Best Seller</h2>
       <ProductDetails />
-
+      {/* Women Top Collection */}
       <div className="container mx-auto">
         <h2 className="text-3xl text-center font-bold mb-4">
           Top Wears for Women
         </h2>
         <ProductGrid products={placeholderProducts} />
       </div>
+
+      {/* ========Featured Collection======== */}
+      <FeaturedCollecton />
     </>
   );
 };
