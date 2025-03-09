@@ -8,27 +8,51 @@ import ProductGrid from "../components/Products/ProductGrid";
 const placeholderProducts = [
   {
     _id: 1,
-    name: "Hats",
+    name: "Liquid Touch Crewneck T-Shirt",
     price: 25,
     images: [{ url: "https://picsum.photos/500/500?random=1" }],
   },
   {
     _id: 2,
-    name: "Hats",
+    name: "Liquid Touch Crewneck T-Shirt",
     price: 25,
     images: [{ url: "https://picsum.photos/500/500?random=2" }],
   },
   {
     _id: 3,
-    name: "Hats",
+    name: "Liquid Touch Crewneck T-Shirt",
     price: 25,
     images: [{ url: "https://picsum.photos/500/500?random=3" }],
   },
   {
     _id: 4,
-    name: "Glasses",
+    name: "Cotton Pocket Classic T-Shirt",
     price: 40,
     images: [{ url: "https://picsum.photos/500/500?random=4" }],
+  },
+  {
+    _id: 5,
+    name: "Liquid Touch Crewneck T-Shirt",
+    price: 25,
+    images: [{ url: "https://picsum.photos/500/500?random=5" }],
+  },
+  {
+    _id: 6,
+    name: "Liquid Touch Crewneck T-Shirt",
+    price: 25,
+    images: [{ url: "https://picsum.photos/500/500?random=6" }],
+  },
+  {
+    _id: 7,
+    name: "Liquid Touch Crewneck T-Shirt",
+    price: 25,
+    images: [{ url: "https://picsum.photos/500/500?random=7" }],
+  },
+  {
+    _id: 8,
+    name: "Cotton Pocket Classic T-Shirt",
+    price: 40,
+    images: [{ url: "https://picsum.photos/500/500?random=8" }],
   },
 ];
 
