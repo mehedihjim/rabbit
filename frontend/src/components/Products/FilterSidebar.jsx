@@ -72,23 +72,6 @@ const FilterSidebar = () => {
     setPriceRange([0, params.maxPrice || 100]);
   }, [searchParams]);
 
-  // const handleFilterChange = (e) => {
-  //   const { name, value, checked, type } = e.target;
-  //   const newFilters = { ...filters };
-
-  //   if (type === "checked") {
-  //     if (checked) {
-  //       newFilters[name] = [...(newFilters[name] || []), value];
-  //     } else {
-  //       newFilters[name] = newFilters[name].filter((item) => item !== value);
-  //     }
-  //   } else {
-  //     newFilters[name] = value;
-  //   }
-  //   setFilters(newFilters);
-  //   console.log(newFilters);
-  // };
-
   const handleFilterChange = (e) => {
     const { name, value, checked, type } = e.target;
     const newFilters = { ...filters };

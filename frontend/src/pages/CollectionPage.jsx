@@ -29,7 +29,7 @@ const CollectionPage = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  });
+  }, []);
 
   useEffect(() => {
     setTimeout(() => {
@@ -108,7 +108,7 @@ const CollectionPage = () => {
         <FilterSidebar />
       </div>
       <div className="flex-grow f-4">
-        <h2 className="text-2xl uppercase mb-4">All Collection</h2>
+        <h2 className="text-2xl uppercase mt-4">All Collection</h2>
 
         {/* Sort Options */}
         <SortOptions />
