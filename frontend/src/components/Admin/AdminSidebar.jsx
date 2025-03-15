@@ -29,6 +29,7 @@ const AdminSidebar = () => {
       <nav className="flex flex-col space-y-2">
         <NavLink
           to="/admin/users"
+          end
           className={({ isActive }) =>
             isActive
               ? "bg-gray-700 text-white py-3 px-4 rounded flex items-center space-x-2"
@@ -39,7 +40,8 @@ const AdminSidebar = () => {
           <span>Users</span>
         </NavLink>
         <NavLink
-          to="/admin/users"
+          to="/admin/products"
+          end
           className={({ isActive }) =>
             isActive
               ? "bg-gray-700 text-white py-3 px-4 rounded flex items-center space-x-2"
@@ -50,7 +52,8 @@ const AdminSidebar = () => {
           <span>Products</span>
         </NavLink>
         <NavLink
-          to="/admin/users"
+          to="/admin/orders"
+          end
           className={({ isActive }) =>
             isActive
               ? "bg-gray-700 text-white py-3 px-4 rounded flex items-center space-x-2"
@@ -61,7 +64,8 @@ const AdminSidebar = () => {
           <span>Orders</span>
         </NavLink>
         <NavLink
-          to="/admin/users"
+          to="/admin/shop"
+          end
           className={({ isActive }) =>
             isActive
               ? "bg-gray-700 text-white py-3 px-4 rounded flex items-center space-x-2"
