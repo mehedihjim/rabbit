@@ -64,7 +64,7 @@ const AdminSidebar = () => {
           <span>Orders</span>
         </NavLink>
         <NavLink
-          to="/admin/shop"
+          to="/"
           end
           className={({ isActive }) =>
             isActive
