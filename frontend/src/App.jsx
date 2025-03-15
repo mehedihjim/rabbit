@@ -12,6 +12,7 @@ import OrderConfirmation from "./pages/OrderConfirmation";
 import OrderDetails from "./pages/OrderDetails";
 import MyOrderPages from "./pages/MyOrderPages";
 import AdminLayout from "./components/Admin/AdminLayout";
+import AdminHomepage from "./pages/AdminHomepage";
 
 const App = () => {
   return (
@@ -31,7 +32,7 @@ const App = () => {
           <Route path="/my-orders" element={<MyOrderPages />} />
         </Route>
         <Route path="/admin" element={<AdminLayout />}>
-          {/* <Route path="/my-orders" element={<MyOrderPages />} /> */}
+          <Route index element={<AdminHomepage />} />
         </Route>
       </Routes>
     </BrowserRouter>
