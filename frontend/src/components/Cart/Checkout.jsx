@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import PaymentButton from "./PaymentButton";
 
 const cart = {
   products: [
@@ -11,10 +12,10 @@ const cart = {
       image: "https://picsum.photos/150?random=1",
     },
     {
-      name: "Stylish Jacket",
+      name: "Gucci Hoodie",
       size: "M",
       color: "Black",
-      price: 30,
+      price: 200,
       image: "https://picsum.photos/150?random=1",
     },
   ],
@@ -37,6 +38,11 @@ const Checkout = () => {
   const handleCreateCheckout = (e) => {
     e.preventDefault();
     setCheckoutId(123);
+  };
+
+  const handlePaymentSuccess = (details) => {
+    console.log("Payment Successful", details);
+    navigate("/order-confirmation");
   };
 
   return (
@@ -194,12 +200,55 @@ const Checkout = () => {
               </button>
             ) : (
               <div className="">
-                <h3 className="text-lg mb-4">Pay with Bkash</h3>
+                {/* <h3 className="text-lg mb-4">Confirm Payment</h3> */}
                 {/* Paypal button component */}
+                <PaymentButton
+                  amount={100}
+                  onSuccess={handlePaymentSuccess}
+                  onError={(err) => alert("Payment Failed. Try again.")}
+                />
               </div>
             )}
           </div>
         </form>
+      </div>
+      {/* Right Section */}
+      <div className="bg-gray-50 p-6 rounded-lg">
+        <h3 className="text-lg mb-4">Order Summery</h3>
+        <div className="border-t border-gray-300 py-4 mb-4">
+          {cart.products.map((product, index) => (
+            <div
+              className="flex items-start justify-between py-2 border-b border-gray-300"
+              key={index}
+            >
+              <div className="flex items-start">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-20 h-24 object-cover mr-4"
+                />
+                <div className="">
+                  <h3 className="text-md ">{product.name}</h3>
+                  <p className="text-gray-500">Size: {product.size}</p>
+                  <p className="text-gray-500">Color: {product.color}</p>
+                </div>
+              </div>
+              <p className="text-xl">${product.price?.toLocaleString()}</p>
+            </div>
+          ))}
+        </div>
+        <div className="flex justify-between items-center text-lg mb-4">
+          <p>Subtotal</p>
+          <p>${cart.totalPrice?.toLocaleString()}</p>
+        </div>
+        <div className="flex justify-between items-center text-lg">
+          <p>Shipping</p>
+          <p>Free</p>
+        </div>
+        <div className="flex justify-between items-center text-lg mt-4 border-t border-gray-300 pt-4">
+          <p>Total</p>
+          <p>${cart.totalPrice?.toLocaleString()}</p>
+        </div>
       </div>
     </div>
   );

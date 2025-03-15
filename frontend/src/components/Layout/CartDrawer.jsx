@@ -7,6 +7,7 @@ const CartDrawer = ({ drawerOpen, toggleCartDrawer }) => {
 
   const handleCheckout = () => {
     navigate("/checkout");
+    toggleCartDrawer();
   };
 
   return (
