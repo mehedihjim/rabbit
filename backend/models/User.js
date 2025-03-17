@@ -38,8 +38,8 @@ userSchema.pre("save", async function (next) {
 });
 
 // Match user entered password to hashed password
-userSchema.method.matchPassword = async function (enteredPassword) {
+userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-module.exports = mongoose.model("User, userSchema");
+module.exports = mongoose.model("User", userSchema);
