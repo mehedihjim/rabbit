@@ -52,7 +52,8 @@ const productSchema = new mongoose.Schema(
     },
     gender: {
       type: String,
-      required: ["Men", "Women", "Unisex"],
+      enum: ["Men", "Women", "Unisex"],
+      required: true,
     },
     images: [
       {
@@ -83,7 +84,7 @@ const productSchema = new mongoose.Schema(
     },
     tags: [String],
     user: {
-      type: mongoose.Schema.Types.OnjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
@@ -93,7 +94,7 @@ const productSchema = new mongoose.Schema(
     metaDescription: {
       type: String,
     },
-    metKeywords: {
+    metaKeywords: {
       type: String,
     },
     dimensions: {
