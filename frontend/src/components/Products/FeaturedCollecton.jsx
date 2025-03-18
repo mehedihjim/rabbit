@@ -11,10 +11,10 @@ const FeaturedCollecton = () => {
           <h2 className="text-lg font-semibold text-white mb-2">
             Explore The Collection
           </h2>
-          <h2 className="text-4xl lg:text-5xl font-bold mb-6">
+          <h2 className="text-4xl lg:text-5xl font-bold mb-6 font-rabbit-saadhu">
             Apparel made for Everyday Life
           </h2>
-          <p className="text-lg text-white opacity-90 mb-6">
+          <p className="text-lg text-white opacity-90 mb-6 font-rabbit-saadhu">
             An exclusive selection of womens and mens designer clothing, shoes,
             accessories and the iconic world of Rabbit.
           </p>

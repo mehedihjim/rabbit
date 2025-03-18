@@ -1,7 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap");
 @import "tailwindcss";
 
 @theme {
-  --color-rabbit-red: #00004b;
+  --color-rabbit-red: #964b00;
+  --font-rabbit-saadhu: "Space Grotesk", "sans-serif";
 }
 
 #root {
