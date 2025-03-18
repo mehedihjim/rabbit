@@ -260,6 +260,20 @@ router.get("/best-seller", async (req, res) => {
   }
 });
 
+//@route GET /api/products/new-arrivals
+//@desc Rerieve latest 8 products= creation date
+//@access Public
+router.get("/new-arrivals", async (req, res) => {
+  try {
+    //fetch latest 8 products
+    const newArrivals = await Product.find().sort({ createdAt: -1 }).limit(8);
+    res.json(newArrivals);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server Error");
+  }
+});
+
 //@route GET /api/products/:id
 //@desc Get a single product by iD
 //@access Public
