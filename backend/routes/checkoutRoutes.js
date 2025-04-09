@@ -1,7 +1,7 @@
 const express = require("express");
 const Checkout = require("../models/Checkout");
 const Cart = require("../models/Cart");
-const Product = require("../models/Product");
+const Product = require("../models/Products");
 const Order = require("../models/Order");
 const { protect, admin } = require("../middleware/authMiddleware");
 
@@ -11,12 +11,18 @@ const router = express.Router();
 //@desc Create a new checkout session
 //@access Private
 router.post("/", protect, async (req, res) => {
-  const { checkoutItems, shippingAddress, PaymentMethod, totalPrice } =
-    req.body;
+  // console.log("Received checkout request body:", req.body);
+  const {
+    checkoutItems,
+    shippingAddress,
+    paymentMethod,
+    totalPrice,
+    paymentStatus,
+    paymentDetails,
+  } = req.body;
 
   if (!checkoutItems || checkoutItems.length === 0) {
-    return;
-    res.status(400).json({ message: "no items in checkout" });
+    return res.status(400).json({ message: "no items in checkout" });
   }
 
   try {
@@ -25,7 +31,7 @@ router.post("/", protect, async (req, res) => {
       user: req.user._id,
       checkoutItems: checkoutItems,
       shippingAddress,
-      PaymentMethod,
+      paymentMethod,
       totalPrice,
       paymentStatus,
       isPaid: false,
@@ -42,8 +48,7 @@ router.post("/", protect, async (req, res) => {
 //@desc Update checkout to mark as paid after successfull payment
 //@access Private
 router.put("/:id/pay", protect, async (req, res) => {
-  const { checkoutItems, shippingAddress, PaymentMethod, totalPrice } =
-    req.body;
+  const { paymentStatus, paymentDetails } = req.body;
 
   try {
     const checkout = await Checkout.findById(req.params.id);
@@ -85,7 +90,7 @@ router.post("/:id/finalize", protect, async (req, res) => {
       //Create final order based on the checkout details
       const finalOrder = await Order.create({
         user: checkout.user,
-        orderItems: checkout.orderItems,
+        orderItems: checkout.checkoutItems,
         shippingAddress: checkout.shippingAddress,
         paymentMethod: checkout.paymentMethod,
         totalPrice: checkout.totalPrice,
