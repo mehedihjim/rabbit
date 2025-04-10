@@ -44,7 +44,9 @@ router.post("/", protect, admin, async (req, res) => {
     });
 
     await newUser.save();
-    res.status(201).json({ message: "User created successfully" });
+    res
+      .status(201)
+      .json({ message: "User created successfully", user: newUser });
   } catch (error) {
     console.error("Error creating user:", error);
     res.status(500).json({ message: "Server error" });
@@ -67,6 +69,25 @@ router.put("/:id", protect, admin, async (req, res) => {
     res.json({ message: "User updated successfully", user: updatedUser });
   } catch (error) {
     console.error("Error updating user:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+//@route DELETE /api/admin/users/:id
+//@desc Delete a user (admin only)
+//@access Private/Admin
+router.delete("/:id", protect, admin, async (req, res) => {
+  try {
+    // Find the user by ID and delete
+    const user = await User.findByIdAndDelete(req.params.id);
+    if (user) {
+      await user.deleteOne();
+      res.json({ message: "User deleted successfully" });
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    console.error("Error deleting user:", error);
     res.status(500).json({ message: "Server error" });
   }
 });
