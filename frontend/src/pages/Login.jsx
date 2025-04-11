@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { Link } from "react-router";
 import login from "../assets/login.jpg";
+import { loginUser } from "../redux/slice/authSlice";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Logged In: ", { email, password });
+    dispatch(loginUser({ email, password }));
   };
 
   return (
@@ -34,7 +37,7 @@ const Login = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border border-gray-300 rounded"
               placeholder="Enter your Email address"
             />
           </div>
@@ -44,7 +47,7 @@ const Login = () => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border border-gray-300 rounded"
               placeholder="Enter your Password"
             />
           </div>

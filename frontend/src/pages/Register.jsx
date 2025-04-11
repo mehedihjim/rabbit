@@ -1,15 +1,18 @@
 import React, { useState } from "react";
 import { Link } from "react-router";
 import register from "../assets/register.jpg";
+import { registerUser } from "../redux/slice/authSlice";
+import { useDispatch } from "react-redux";
 
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Registered: ", { name, email, password });
+    dispatch(registerUser({ name, email, password }));
   };
 
   return (
@@ -44,7 +47,7 @@ const Register = () => {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border border-gray-300 rounded"
               placeholder="Enter your name"
             />
           </div>
@@ -54,7 +57,7 @@ const Register = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border border-gray-300 rounded"
               placeholder="Enter your email address"
             />
           </div>
@@ -64,7 +67,7 @@ const Register = () => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border border-gray-300 rounded"
               placeholder="Enter your password"
             />
           </div>
