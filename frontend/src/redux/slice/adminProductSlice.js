@@ -85,7 +85,7 @@ const adminProductSlice = createSlice({
         state.error = action.error.message;
       })
       //Create product
-      .addCase(fetchAdminProducts.fulfilled, (state, action) => {
+      .addCase(createProduct.fulfilled, (state, action) => {
         state.products.push(action.payload);
       })
       //Update product
