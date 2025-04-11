@@ -35,5 +35,153 @@ export const fetchProductsByFilters = createAsyncThunk(
     const response = await axios.get(
       `${import.meta.env.VITE_BACKEND_URL}/api/products?${query.toString()}`
     );
+    return response.data; // Return the products data
   }
 );
+
+//Async thunk for fetching single products
+export const fetchProductDetails = createAsyncThunk(
+  "products/fetchProductDetails",
+  async (id) => {
+    const response = await axios.get(
+      `${import.meta.env.VITE_BACKEND_URL}/api/products/${id}`
+    );
+    return response.data; // Return the single product data
+  }
+);
+
+//Async thunk for fetch similar products
+export const updateProduct = createAsyncThunk(
+  "products/updateProduct",
+  async ({ id, productData }) => {
+    const response = await axios.put(
+      `${import.meta.env.VITE_BACKEND_URL}/api/products/${id}`,
+      productData,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+        },
+      }
+    );
+    return response.data; // Return the similar products data
+  }
+);
+
+//Async thunk to fetch similar products
+export const fetchSimilarProducts = createAsyncThunk(
+  "products/fetchSimilarProducts",
+  async ({ id }) => {
+    const response = await axios.get(
+      `${import.meta.env.VITE_BACKEND_URL}/api/products/similar/${id}`
+    );
+
+    return response.data; // Return the similar products data
+  }
+);
+
+const productSlice = createSlice({
+  name: "products",
+  initialState: {
+    products: [],
+    selectedProduct: null,
+    similarProducts: [],
+    loading: false,
+    error: null,
+    filters: {
+      category: "",
+      size: "",
+      color: "",
+      gender: "",
+      minPrice: "",
+      maxPrice: "",
+      sortBy: "",
+      search: "",
+      material: "",
+      brand: "",
+      collection: "",
+    },
+  },
+  reducers: {
+    setFilters: (state, action) => {
+      state.filters = { ...state.filters, ...action.payload };
+    },
+    clearFileters: (state) => {
+      state.filters = {
+        category: "",
+        size: "",
+        color: "",
+        gender: "",
+        minPrice: "",
+        maxPrice: "",
+        sortBy: "",
+        search: "",
+        material: "",
+        brand: "",
+        collection: "",
+      };
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchProductsByFilters.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchProductsByFilters.fulfilled, (state, action) => {
+        state.loading = false;
+        state.products = Array.isArray(action.payload) ? action.payload : [];
+      })
+      .addCase(fetchProductDetails.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      //Single product
+      .addCase(fetchProductDetails.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchProductDetails.fulfilled, (state, action) => {
+        state.loading = false;
+        state.selectedProduct = action.payload; // Set the selected product
+      })
+      .addCase(fetchProductsByFilters.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      //Update products
+      .addCase(updateProduct.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        const updatedProduct = action.payload;
+        const index = state.products.findIndex(
+          (product) => product._id === updatedProduct._id
+        );
+        if (index !== -1) {
+          state.products[index] = updatedProduct; // Update the product in the list
+        }
+      })
+      .addCase(updateProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      //Similar products
+      .addCase(fetchSimilarProducts.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchSimilarProducts.fulfilled, (state, action) => {
+        state.loading = false;
+        state.products = action.payload;
+      })
+      .addCase(fetchSimilarProducts.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      });
+  },
+});
+
+export const { setFilters, clearFileters } = productSlice.actions;
+export default productSlice.reducer;
