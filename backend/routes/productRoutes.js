@@ -309,7 +309,7 @@ router.get("/similar/:id", async (req, res) => {
       category: product.category,
     }).limit(4);
 
-    res.jason(similarProducts);
+    res.json(similarProducts);
   } catch (error) {
     console.error(error);
     res.status(500).send("Server Error");
