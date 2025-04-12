@@ -172,11 +172,11 @@ router.get("/", async (req, res) => {
     let query = {};
 
     //filter logic
-    if (collection && collection.toLocateLowerCase() !== "all") {
+    if (collection && collection.toLowerCase() !== "all") {
       query.collections = collection;
     }
 
-    if (collection && collection.toLocateLowerCase() !== "all") {
+    if (collection && collection.toLowerCase() !== "all") {
       query.category = category;
     }
 
@@ -189,7 +189,7 @@ router.get("/", async (req, res) => {
     }
 
     if (size) {
-      query.size = { $in: size.split(",") };
+      query.sizes = { $in: size.split(",") };
     }
 
     if (color) {
