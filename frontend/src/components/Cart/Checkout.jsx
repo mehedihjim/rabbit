@@ -1,29 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import PaymentButton from "./PaymentButton";
-
-const cart = {
-  products: [
-    {
-      name: "Stylish Jacket",
-      size: "M",
-      color: "Black",
-      price: 120,
-      image: "https://picsum.photos/150?random=1",
-    },
-    {
-      name: "Gucci Hoodie",
-      size: "M",
-      color: "Black",
-      price: 200,
-      image: "https://picsum.photos/150?random=1",
-    },
-  ],
-  totalPrice: 150,
-};
+import { useDispatch, useSelector } from "react-redux";
+import { createCheckout } from "./../../redux/slice/checkoutSlice";
 
 const Checkout = () => {
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+  const { cart, loading, error } = useSelector((state) => state.cart);
+  const { user } = useSelector((state) => state.auth);
+
   const [checkoutId, setCheckoutId] = useState(null);
   const [shippingAddress, setShippingAddress] = useState({
     firstName: "",
@@ -35,15 +22,78 @@ const Checkout = () => {
     phone: "",
   });
 
+  //Ensure cart is loaded before proceeding to checkout
+  useEffect(() => {
+    if (!cart || !cart.products || cart.products.length === 0) {
+      navigate("/");
+    }
+  }, [cart, navigate]);
+
   const handleCreateCheckout = (e) => {
     e.preventDefault();
-    setCheckoutId(123);
+    if (cart && cart.products.length > 0) {
+      const res = dispatch(
+        createCheckout({
+          checkoutItems: cart.products,
+          shippingAddress,
+          paymentMethod: "Online",
+          totalPrice: cart.totalPrice,
+        })
+      );
+      if (res.payload && res.payload._id) {
+        setCheckoutId(res.payload._id); //Set checkoutId to the response id
+      }
+    }
   };
 
-  const handlePaymentSuccess = (details) => {
-    console.log("Payment Successful", details);
-    navigate("/order-confirmation");
+  const handlePaymentSuccess = async (details) => {
+    try {
+      const response = await axios.put(
+        `${import.meta.env.VITE_BACKEND_URL}/api/checkout/pay`,
+        { paymentStatus: "paid", paymentDetails: details },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        await handleFinalizeCheckout(checkoutId); // Finalize the checkout
+      } else {
+        console.error(error);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
+
+  const handleFinalizeCheckout = async (checkoutId) => {
+    try {
+      const response = await axios.post(
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/api/checkout/${checkoutId}/finalize`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        navigate("/order-confirmation");
+      } else {
+        console.error(error);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  if (loading) return <p className="text-center">Loading...</p>;
+  if (error) return <p className="text-center">Error: {error}</p>;
+  if (!cart || !cart.products || cart.products.length === 0)
+    return <p className="text-center">Your cart is empty</p>;
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto py-10 px-6 tracking-tighter">
@@ -59,7 +109,7 @@ const Checkout = () => {
             </label>
             <input
               type="email"
-              value="user@rabbi9t.com"
+              value={user ? user.email : ""}
               className="w-full p-2 border border-gray-300 rounded "
               disabled
             />
@@ -203,7 +253,7 @@ const Checkout = () => {
                 {/* <h3 className="text-lg mb-4">Confirm Payment</h3> */}
                 {/* Paypal button component */}
                 <PaymentButton
-                  amount={100}
+                  amount={cart.totalPrice}
                   onSuccess={handlePaymentSuccess}
                   onError={(err) => alert("Payment Failed. Try again.")}
                 />

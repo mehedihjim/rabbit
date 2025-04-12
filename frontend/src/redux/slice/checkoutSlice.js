@@ -6,6 +6,7 @@ export const createCheckout = createAsyncThunk(
   "checkout/createCheckout",
   async ({ cart, userId, guestId }, { rejectWithValue }) => {
     try {
+      const checkoutdata = { cart, userId, guestId };
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/checkout`,
         checkoutdata,
