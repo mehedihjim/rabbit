@@ -44,7 +44,7 @@ const Login = () => {
           className="w-full max-w-md bg-white p-8 rounded-lg border border-gray-300 shadow-sm"
         >
           <div className="flex justify-center mb-6">
-            <h2 className="text-xl font-medium">Rabbit</h2>
+            <h2 className="text-xl font-rabbit-saadhu font-medium">Saadhu.</h2>
           </div>
           <h2 className="text-2xl font-bold text-center mb-6">
             Let's explore in deep~
