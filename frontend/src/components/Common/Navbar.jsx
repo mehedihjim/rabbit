@@ -34,16 +34,28 @@ const Navbar = () => {
           </Link>
         </div>
         <div className="hidden md:flex space-x-6 text-sm font-medium uppercase">
-          <NavLink to="#" className="text-gray-700 hover:text-black ">
+          <NavLink
+            to="/collections/all?gender=Men"
+            className="text-gray-700 hover:text-black "
+          >
             Men
           </NavLink>
-          <NavLink to="#" className="text-gray-700 hover:text-black ">
+          <NavLink
+            to="/collections/all?gender=Women"
+            className="text-gray-700 hover:text-black "
+          >
             Women
           </NavLink>
-          <NavLink to="#" className="text-gray-700 hover:text-black ">
+          <NavLink
+            to="/collections/all?category=Top Wear"
+            className="text-gray-700 hover:text-black "
+          >
             Top Wear
           </NavLink>
-          <NavLink to="#" className="text-gray-700 hover:text-black ">
+          <NavLink
+            to="/collections/all?category=Bottom Wear"
+            className="text-gray-700 hover:text-black "
+          >
             Bottom Wear
           </NavLink>
         </div>
@@ -86,28 +98,28 @@ const Navbar = () => {
           <h2 className="text-xl font-semibold mb-4">Menu</h2>
           <nav className="space-y-4">
             <Link
-              to="/"
+              to="/collections/all?gender=Men"
               className="block text-gray-600 hover:text-black"
               onClick={toggleNavDrawer}
             >
               Men
             </Link>
             <Link
-              to="/"
+              to="/collections/all?gender=Women"
               className="block text-gray-600 hover:text-black"
               onClick={toggleNavDrawer}
             >
               Women
             </Link>
             <Link
-              to="/"
+              to="/collections/all?category=Top Wear"
               className="block text-gray-600 hover:text-black"
               onClick={toggleNavDrawer}
             >
               Top Wear
             </Link>
             <Link
-              to="/"
+              to="/collections/all?category=Bottom Wear"
               className="block text-gray-600 hover:text-black"
               onClick={toggleNavDrawer}
             >
