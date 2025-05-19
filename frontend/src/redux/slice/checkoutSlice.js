@@ -4,22 +4,48 @@ import axios from "axios";
 //Async thunk for creating a checkout session
 export const createCheckout = createAsyncThunk(
   "checkout/createCheckout",
-  async ({ cart, userId, guestId }, { rejectWithValue }) => {
+  async (
+    {
+      checkoutItems,
+      shippingAddress,
+      paymentMethod,
+      totalPrice,
+      paymentStatus,
+      paymentDetails,
+    },
+    { rejectWithValue }
+  ) => {
     try {
-      const checkoutdata = { cart, userId, guestId };
+      const checkoutData = {
+        checkoutItems,
+        shippingAddress,
+        paymentMethod,
+        totalPrice,
+        paymentStatus,
+        paymentDetails,
+      };
+
+      console.log("Sending checkout data:", checkoutData);
+
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/checkout`,
-        checkoutdata,
+        checkoutData,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("userToken")}`,
           },
         }
       );
-      return response.data; // Return the session URL
+
+      return response.data;
     } catch (error) {
-      console.error("Error creating checkout session:", error);
-      return rejectWithValue(error.response.data);
+      console.error("Error creating checkout session:", {
+        message: error.message,
+        response: error.response?.data,
+      });
+      return rejectWithValue(
+        error.response?.data || { message: "Unknown error" }
+      );
     }
   }
 );

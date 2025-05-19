@@ -26,8 +26,10 @@ const CartContents = ({ cart, userId, guestId }) => {
     }
   };
 
-  const handleRemoveFromCart = (productId, size, color) => {
-    dispatch(removeFromCart({ productId, size, color, guestId, userId }));
+  const handleRemoveFromCart = (productId, quantity, size, color) => {
+    dispatch(
+      removeFromCart({ productId, quantity, size, color, guestId, userId })
+    );
   };
 
   return (
@@ -88,6 +90,7 @@ const CartContents = ({ cart, userId, guestId }) => {
               onClick={() =>
                 handleRemoveFromCart(
                   product.productId,
+                  product.quantity,
                   product.size,
                   product.color
                 )
