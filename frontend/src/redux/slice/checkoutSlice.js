@@ -25,8 +25,6 @@ export const createCheckout = createAsyncThunk(
         paymentDetails,
       };
 
-      console.log("Sending checkout data:", checkoutData);
-
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/checkout`,
         checkoutData,

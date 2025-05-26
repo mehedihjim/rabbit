@@ -5,36 +5,6 @@ import axios from "axios";
 import { createCheckout } from "../../redux/slice/checkoutSlice";
 
 const Checkout = () => {
-  const handleSslCommerzPayment = () => {
-    const paymentData = {
-      total_amount: cart.totalPrice,
-      currency: "BDT",
-      tran_id: checkoutId,
-      success_url: `${import.meta.env.VITE_BACKEND_URL}/api/checkout/success`,
-      fail_url: `${import.meta.env.VITE_BACKEND_URL}/api/checkout/fail`,
-      cancel_url: `${import.meta.env.VITE_BACKEND_URL}/api/checkout/cancel`,
-      shipping_method: "Courier",
-      product_name: "Cart Products",
-      product_category: "Mixed",
-      product_profile: "general",
-      cus_name: `${shippingAddress.firstName} ${shippingAddress.lastName}`,
-      cus_email: user?.email,
-      cus_add1: shippingAddress.address,
-      cus_city: shippingAddress.city,
-      cus_postcode: shippingAddress.postalCode,
-      cus_country: shippingAddress.country,
-      cus_phone: shippingAddress.phone,
-    };
-
-    const script = document.createElement("script");
-    script.src = "https://sandbox.sslcommerz.com/embed.min.js?";
-    script.setAttribute("token", "testbox"); // Use "testbox" for sandbox
-    script.setAttribute("postdata", JSON.stringify(paymentData));
-    script.setAttribute("order", checkoutId);
-    script.type = "text/javascript";
-    document.getElementById("sslczPayBtnContainer").appendChild(script);
-  };
-
   //Take a break here and check the code
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -62,8 +32,6 @@ const Checkout = () => {
   const handleCreateCheckout = async (e) => {
     e.preventDefault();
 
-    if (!cart || !cart.products.length) return;
-
     try {
       const res = await dispatch(
         createCheckout({
@@ -76,6 +44,14 @@ const Checkout = () => {
 
       if (res.payload && res.payload._id) {
         setCheckoutId(res.payload._id);
+
+        // Now redirect to payment gateway
+        await handlePaymentRedirect(cart, {
+          name: user.name,
+          email: user.email,
+          address: shippingAddress.address,
+          phone: user.phone,
+        });
       }
     } catch (err) {
       console.error("Checkout creation failed:", err);
@@ -99,6 +75,23 @@ const Checkout = () => {
       }
     } catch (err) {
       console.error("Payment update failed:", err);
+    }
+  };
+
+  const handlePaymentRedirect = async (cart, user) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:9000/api/payment", // your backend URL
+        { cart, user }
+      );
+
+      if (response.data.paymentUrl) {
+        window.location.href = response.data.paymentUrl; // Redirect to SSLCommerz payment page
+      } else {
+        console.error("Payment URL not received");
+      }
+    } catch (error) {
+      console.error("Payment redirection failed:", error);
     }
   };
 
@@ -126,6 +119,57 @@ const Checkout = () => {
   if (error) return <p className="text-center">Error: {error}</p>;
   if (!cart || !cart.products?.length)
     return <p className="text-center">Your cart is empty</p>;
+
+  useEffect(() => {
+    if (!checkoutId) return;
+
+    const paymentData = {
+      total_amount: cart.totalPrice,
+      currency: "BDT",
+      tran_id: checkoutId,
+      success_url: `${import.meta.env.VITE_BACKEND_URL}/api/checkout/success`,
+      fail_url: `${import.meta.env.VITE_BACKEND_URL}/api/checkout/fail`,
+      cancel_url: `${import.meta.env.VITE_BACKEND_URL}/api/checkout/cancel`,
+      shipping_method: "Courier",
+      product_name: "Cart Products",
+      product_category: "Mixed",
+      product_profile: "general",
+      cus_name: `${shippingAddress.firstName} ${shippingAddress.lastName}`,
+      cus_email: user?.email,
+      cus_add1: shippingAddress.address,
+      cus_city: shippingAddress.city,
+      cus_postcode: shippingAddress.postalCode,
+      cus_country: shippingAddress.country,
+      cus_phone: shippingAddress.phone,
+    };
+
+    // Attach postdata to window (important)
+    window.postdata = paymentData;
+
+    const script = document.createElement("script");
+    script.src =
+      "https://sandbox.sslcommerz.com/embed.min.js?" +
+      Math.random().toString(36).substring(7); // avoid caching
+    script.id = "sslczPayScript";
+    script.setAttribute("token", "testbox");
+    script.type = "text/javascript";
+
+    const container = document.getElementById("sslczPayBtnContainer");
+
+    // Prevent duplicate script injections
+    if (!document.getElementById("sslczPayScript") && container) {
+      container.innerHTML = ""; // Clear any old buttons
+      container.appendChild(script);
+    }
+
+    return () => {
+      // Cleanup script when component unmounts or checkoutId changes
+      const existing = document.getElementById("sslczPayScript");
+      if (existing) {
+        existing.remove();
+      }
+    };
+  }, [checkoutId]);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto py-10 px-6 tracking-tighter">
@@ -248,14 +292,7 @@ const Checkout = () => {
                 Continue to Payment
               </button>
             ) : (
-              <div id="sslczPayBtnContainer">
-                <button
-                  className="w-full bg-green-600 text-white py-3 rounded hover:bg-green-700 duration-200"
-                  onClick={handleSslCommerzPayment}
-                >
-                  Pay Now with SSLCommerz
-                </button>
-              </div>
+              <div id="sslczPayBtnContainer" />
             )}
           </div>
         </form>
