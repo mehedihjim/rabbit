@@ -18,7 +18,10 @@ const GenderCollection = () => {
           </p>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-8 max-w-7xl mx-auto">
+        <Link
+          to="/collections/all?gender=Men"
+          className="flex flex-col lg:flex-row gap-8 max-w-7xl mx-auto"
+        >
           {/* Men's Collection */}
           <div className="group cursor-pointer relative flex-1 overflow-hidden hover:shadow-3xl transition-all duration-700 transform hover:scale-[1.02]">
             <div className="relative h-[600px] md:h-[700px]">
@@ -42,20 +45,20 @@ const GenderCollection = () => {
                   <p className="text-gray-200 mb-6 text-lg max-w-md opacity-90">
                     Sophisticated styles for the modern gentleman
                   </p>
-                  <Link
-                    to="/collections/all?gender=Men"
-                    className="inline-flex items-center gap-2 bg-white text-gray-900 px-8 py-4 font-normal hover:bg-gray-100 transition-all duration-300 hover:shadow-lg hover:scale-105 active:scale-95 group/button"
-                  >
+                  <div className="inline-flex items-center gap-2 bg-white text-gray-900 px-8 py-4 font-normal hover:bg-gray-100 transition-all duration-300 hover:shadow-lg hover:scale-105 active:scale-95 group/button">
                     EXPLORE THE COLLECTION
                     <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover/button:translate-x-1" />
-                  </Link>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Women's Collection */}
-          <div className="group relative flex-1 cursor-pointer overflow-hidden hover:shadow-3xl transition-all duration-700 transform hover:scale-[1.02]">
+          <Link
+            to="/collections/all?gender=Women"
+            className="group relative flex-1 cursor-pointer overflow-hidden hover:shadow-3xl transition-all duration-700 transform hover:scale-[1.02]"
+          >
             <div className="relative h-[600px] md:h-[700px]">
               <img
                 src={womenCollecton}
@@ -77,18 +80,15 @@ const GenderCollection = () => {
                   <p className="text-gray-200 mb-6 text-lg max-w-md opacity-90">
                     Elegant designs for every confident woman
                   </p>
-                  <Link
-                    to="/collections/all?gender=Women"
-                    className="inline-flex items-center gap-2 bg-white text-gray-900 px-8 py-4 font-normal hover:bg-gray-100 transition-all duration-300 hover:shadow-lg hover:scale-105 active:scale-95 group/button"
-                  >
+                  <div className="inline-flex items-center gap-2 bg-white text-gray-900 px-8 py-4 font-normal hover:bg-gray-100 transition-all duration-300 hover:shadow-lg hover:scale-105 active:scale-95 group/button">
                     EXPLORE THE COLLECTION
                     <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover/button:translate-x-1" />
-                  </Link>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          </Link>
+        </Link>
       </div>
     </section>
   );

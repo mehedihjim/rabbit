@@ -7,6 +7,7 @@ import orderReducer from "./slice/orderSlice";
 import adminReducer from "./slice/adminSlice";
 import adminProductReducer from "./slice/adminProductSlice";
 import adminOrderReducer from "./slice/adminOrderSlice";
+import { subscribeApi } from "../api/subscribeApi";
 
 const store = configureStore({
   reducer: {
@@ -18,7 +19,10 @@ const store = configureStore({
     admin: adminReducer,
     adminProducts: adminProductReducer,
     adminOrders: adminOrderReducer,
+    [subscribeApi.reducerPath]: subscribeApi.reducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(subscribeApi.middleware),
 });
 
 export default store;

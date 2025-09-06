@@ -2,21 +2,27 @@ import { useState } from "react";
 import { Link } from "react-router";
 import { Mail, CheckCircle, ArrowRight } from "lucide-react";
 import newsletter from "../assets/newsletter.jpg";
+import { useSubscribeUserMutation } from "../api/subscribeApi";
 
 const Newsletter = () => {
   const [email, setEmail] = useState("");
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [subscribeUser] = useSubscribeUserMutation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      await subscribeUser(email).unwrap(); // calls backend
       setIsSubscribed(true);
+      setEmail(""); // optional: clear input
+    } catch (err) {
+      alert(err.data?.message || err.message || "Subscription failed");
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
   if (isSubscribed) {

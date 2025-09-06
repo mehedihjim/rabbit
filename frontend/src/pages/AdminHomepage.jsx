@@ -1,9 +1,8 @@
-import React from "react";
 import { Link } from "react-router";
 
 const orders = [
   {
-    _id: 123123,
+    _id: 123120,
     user: {
       name: "John Doe",
     },
@@ -11,7 +10,7 @@ const orders = [
     status: "Procession",
   },
   {
-    _id: 123123,
+    _id: 123121,
     user: {
       name: "John Doe",
     },
@@ -19,7 +18,15 @@ const orders = [
     status: "Completed",
   },
   {
-    _id: 123123,
+    _id: 123122,
+    user: {
+      name: "Lily Mack",
+    },
+    totalPrice: 400,
+    status: "Completed",
+  },
+  {
+    _id: 123124,
     user: {
       name: "Lily Mack",
     },
