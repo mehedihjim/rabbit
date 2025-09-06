@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import login from "../assets/login.jpg";
 import { loginUser } from "../redux/slice/authSlice";
@@ -47,7 +47,7 @@ const Login = () => {
             <h2 className="text-xl font-rabbit-saadhu font-medium">Saadhu.</h2>
           </div>
           <h2 className="text-2xl font-bold text-center mb-6">
-            Let's explore in deep~
+            {`Let's explore in deep~`}
           </h2>
           <p className="text-center mb-6">
             Enter Your Username & Password to login
@@ -79,7 +79,7 @@ const Login = () => {
             Sign In
           </button>
           <p className="mt-6 text-center text-sm">
-            Don't have an account?{" "}
+            {`Don't have an account?`}{" "}
             <Link
               to={`/register?redirect=${encodeURIComponent(redirect)}`}
               className="text-rabbit-red underline "

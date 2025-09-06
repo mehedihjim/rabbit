@@ -2,9 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Subscriber = require("../models/Subscriber");
 
-//@route POST /api/subscribe
-//@desc Subscribe a user
-//@access Public
+// Create subscribers
 router.post("/subscribe", async (req, res) => {
   const { email } = req.body;
 
@@ -27,6 +25,17 @@ router.post("/subscribe", async (req, res) => {
     res.status(201).json({ message: "Subscribed successfully" });
   } catch (error) {
     console.error("Error subscribing:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+//get all subscribers
+router.get("/subscribers", async (req, res) => {
+  try {
+    const subscribers = await Subscriber.find({});
+    res.json(subscribers);
+  } catch (error) {
+    console.error("Error fetching subscribers:", error);
     res.status(500).json({ message: "Server error" });
   }
 });

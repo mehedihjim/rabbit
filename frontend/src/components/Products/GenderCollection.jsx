@@ -63,7 +63,7 @@ const GenderCollection = () => {
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
               {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-rose-400/70 via-rose-900/20 to-transparent transition-opacity duration-500 group-hover:from-rose-900/80"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-rabbit-red/70 via-rose-900/20 to-transparent transition-opacity duration-500 group-hover:from-rose-900/80"></div>
 
               {/* Content */}
               <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-12">

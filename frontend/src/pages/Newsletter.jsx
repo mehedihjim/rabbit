@@ -1,43 +1,138 @@
-import React from "react";
+import { useState } from "react";
+import { Link } from "react-router";
+import { Mail, CheckCircle, ArrowRight } from "lucide-react";
 
 const Newsletter = () => {
-  return (
-    <div className="bg-white dark:bg-gray-900">
-      <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
-        <div className="mx-auto max-w-screen-md sm:text-center">
-          <h2 className="mb-4 text-3xl tracking-tight font-extrabold text-gray-900 sm:text-4xl dark:text-white">
-            Sign up for our newsletter
-          </h2>
-          <p className="mx-auto mb-8 max-w-2xl font-light text-gray-500 md:mb-12 sm:text-xl dark:text-gray-400">
-            Stay up to date with the roadmap progress, announcements and
-            exclusive discounts feel free to sign up with your email.
+  const [email, setEmail] = useState("");
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    // Simulate API call
+    setTimeout(() => {
+      setIsSubscribed(true);
+      setIsLoading(false);
+    }, 1500);
+  };
+
+  if (isSubscribed) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="text-center p-8">
+          <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+          <h2 className="text-3xl font-bold mb-2">Welcome to the Family!</h2>
+          <p className="text-gray-600 mb-6">
+            {`Thank you for subscribing to our newsletter. You'll receive your
+            first email soon.`}
           </p>
-          <form action="#">
-            <div className="items-center mx-auto mb-3 space-y-4 max-w-screen-sm sm:flex sm:space-y-0">
-              <div className="relative w-full">
-                <label
-                  htmlFor="email"
-                  className="hidden mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                >
-                  Email address
-                </label>
-                <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none"></div>
-                <form className="flex">
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
-                    className="p-3 w-full text-sm border-t border-l border-b border-gray-300 rounded-l-md focus:outline-none forcus:ring-2 focus:ring-gray-500 transition-all"
-                  />
-                  <button
-                    type="submit"
-                    className="cursor-pointer bg-rabbit-red text-white px-6 py-3 text-sm rounded-r-md hover:bg-rabbit-red/90 transition-all"
-                  >
-                    Subscribe
-                  </button>
-                </form>
-              </div>
+          <Link
+            to="/"
+            className="inline-flex items-center px-6 py-3 bg-rabbit-red text-white rounded-lg font-semibold hover:bg-rabbit-red/80 transition-all duration-300 group"
+          >
+            Continue Shopping
+            <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen flex">
+      {/* Left Column - Form */}
+      <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-8 md:p-12 bg-white">
+        <form
+          onSubmit={handleSubmit}
+          className="w-full max-w-md bg-white p-8 rounded-2xl border border-gray-200 shadow-lg"
+        >
+          {/* Logo */}
+          <div className="flex justify-center mb-8">
+            <h2 className="text-2xl font-rabbit-saadhu font-medium text-gray-800">
+              Saadhu.
+            </h2>
+          </div>
+
+          {/* Header */}
+          <div className="text-center mb-8">
+            <Mail className="w-12 h-12 text-rabbit-red mx-auto mb-4" />
+            <h2 className="text-3xl font-bold text-gray-800 mb-2">
+              Stay In The Loop
+            </h2>
+            <p className="text-gray-600 leading-relaxed">
+              Get exclusive access to new collections, special offers, and style
+              inspiration delivered straight to your inbox.
+            </p>
+          </div>
+
+          {/* Form Fields */}
+          <div className="space-y-6">
+            <div>
+              <label className="block text-sm font-semibold mb-2 text-gray-700">
+                Email Address
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rabbit-red/20 focus:border-rabbit-red transition-all duration-200"
+                placeholder="Enter your email address"
+                required
+              />
             </div>
-          </form>
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            disabled={isLoading}
+            className={`w-full mt-8 p-3 rounded-lg font-semibold transition-all duration-300 ${
+              isLoading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-rabbit-red hover:bg-rabbit-red/80 hover:shadow-lg hover:-translate-y-0.5"
+            } text-white`}
+          >
+            {isLoading ? (
+              <div className="flex items-center justify-center">
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                Subscribing...
+              </div>
+            ) : (
+              "Subscribe to Newsletter"
+            )}
+          </button>
+
+          {/* Footer */}
+          <p className="mt-6 text-center text-xs text-gray-500 leading-relaxed">
+            By subscribing, you agree to our{" "}
+            <Link
+              to="/privacy"
+              className="text-rabbit-red underline hover:no-underline"
+            >
+              Privacy Policy
+            </Link>{" "}
+            and{" "}
+            <Link
+              to="/terms"
+              className="text-rabbit-red underline hover:no-underline"
+            >
+              Terms of Service
+            </Link>
+            . You can unsubscribe at any time.
+          </p>
+        </form>
+      </div>
+
+      {/* Right Column - Visual Content */}
+      <div className="hidden md:block w-1/2 bg-gray-300">
+        <div className="h-full flex flex-col justify-center items-center">
+          <img
+            src="https://images.pexels.com/photos/1229861/pexels-photo-1229861.jpeg?auto=compress&cs=tinysrgb&w=800"
+            alt="Newsletter"
+            className="h-full w-full object-cover"
+          />
         </div>
       </div>
     </div>
