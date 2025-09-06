@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Hero from "../components/Layout/Hero";
 import GenderCollection from "../components/Products/GenderCollection";
 import NewArrivals from "../components/Products/NewArrivals";
