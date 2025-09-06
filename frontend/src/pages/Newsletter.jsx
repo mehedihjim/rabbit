@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router";
 import { Mail, CheckCircle, ArrowRight } from "lucide-react";
+import newsletter from "../assets/newsletter.jpg";
 
 const Newsletter = () => {
   const [email, setEmail] = useState("");
@@ -41,13 +42,10 @@ const Newsletter = () => {
   }
 
   return (
-    <div className="min-h-screen flex">
+    <div className="max-h-[750px] flex">
       {/* Left Column - Form */}
-      <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-8 md:p-12 bg-white">
-        <form
-          onSubmit={handleSubmit}
-          className="w-full max-w-md bg-white p-8 rounded-2xl border border-gray-200 shadow-lg"
-        >
+      <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-4 md:p-10 bg-white">
+        <form onSubmit={handleSubmit} className="w-full max-w-md bg-white p-2">
           {/* Logo */}
           <div className="flex justify-center mb-8">
             <h2 className="text-2xl font-rabbit-saadhu font-medium text-gray-800">
@@ -77,7 +75,7 @@ const Newsletter = () => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rabbit-red/20 focus:border-rabbit-red transition-all duration-200"
+                className="w-full p-4 border border-gray-300 focus:ring-2 focus:ring-rabbit-red/20 focus:border-rabbit-red transition-all duration-200"
                 placeholder="Enter your email address"
                 required
               />
@@ -88,15 +86,15 @@ const Newsletter = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className={`w-full mt-8 p-3 rounded-lg font-semibold transition-all duration-300 ${
+            className={`w-full mt-8 p-3 font-semibold transition-all duration-300 ${
               isLoading
                 ? "bg-gray-400 cursor-not-allowed"
-                : "bg-rabbit-red hover:bg-rabbit-red/80 hover:shadow-lg hover:-translate-y-0.5"
+                : "bg-rabbit-red hover:bg-rabbit-red/80 cursor-pointer hover:shadow-lg hover:-translate-y-0.5"
             } text-white`}
           >
             {isLoading ? (
               <div className="flex items-center justify-center">
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                <div className="w-5 h-5 border-2 border-white border-t-transparent animate-spin mr-2"></div>
                 Subscribing...
               </div>
             ) : (
@@ -129,7 +127,7 @@ const Newsletter = () => {
       <div className="hidden md:block w-1/2 bg-gray-300">
         <div className="h-full flex flex-col justify-center items-center">
           <img
-            src="https://images.pexels.com/photos/1229861/pexels-photo-1229861.jpeg?auto=compress&cs=tinysrgb&w=800"
+            src={newsletter}
             alt="Newsletter"
             className="h-full w-full object-cover"
           />
