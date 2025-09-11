@@ -1,26 +1,26 @@
-import React, { use, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaFilter } from "react-icons/fa";
 import FilterSidebar from "../components/Products/FilterSidebar";
 import SortOptions from "../components/Products/SortOptions";
 import ProductGrid from "../components/Products/ProductGrid";
 import { useParams, useSearchParams } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchProductsByFilters } from "./../redux/slice/productsSlice";
+import { useGetProductsQuery } from "../api/productsApi";
 
 const CollectionPage = () => {
   const { collection } = useParams();
   const [searchParams] = useSearchParams();
-  const dispatch = useDispatch();
-  const { products, loading, error } = useSelector((state) => state.products);
   const queryParams = Object.fromEntries([...searchParams]);
+  const {
+    data: products,
+    isLoading,
+    isError,
+  } = useGetProductsQuery({
+    collection,
+    ...queryParams,
+  });
 
   const sidebarRef = useRef(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  useEffect(() => {
-    // Fetch products based on collection and query params
-    dispatch(fetchProductsByFilters({ collection, ...queryParams }));
-  }, [dispatch, collection, searchParams]);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -71,7 +71,7 @@ const CollectionPage = () => {
         <SortOptions />
 
         {/* Product Grid */}
-        <ProductGrid products={products} loading={loading} error={error} />
+        <ProductGrid products={products} loading={isLoading} error={isError} />
       </div>
     </div>
   );
