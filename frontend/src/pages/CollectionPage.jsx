@@ -70,7 +70,7 @@ const CollectionPage = () => {
         <div className="flex gap-8">
           {/* Desktop Filter Sidebar */}
           <aside className="hidden lg:block w-72 flex-shrink-0">
-            <FilterSidebar />
+            <FilterSidebar products={products} />
           </aside>
 
           {/* Mobile Filter Sidebar Overlay */}
@@ -97,7 +97,7 @@ const CollectionPage = () => {
                 <X className="w-5 h-5 text-gray-600" />
               </button>
             </div>
-            <FilterSidebar />
+            <FilterSidebar products={products} />
           </aside>
 
           {/* Main Content */}

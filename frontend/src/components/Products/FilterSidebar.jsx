@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { X } from "lucide-react";
 
-const FilterSidebar = () => {
+const FilterSidebar = ({ products = [] }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const [filters, setFilters] = useState({
@@ -12,10 +12,17 @@ const FilterSidebar = () => {
     material: [],
     brand: [],
     minPrice: 0,
-    maxPrice: 100,
+    maxPrice: 1000,
   });
 
-  const [priceRange, setPriceRange] = useState([0, 100]);
+  const [priceRange, setPriceRange] = useState([0, 1000]);
+
+  // Calculate dynamic max price from products
+  const maxProductPrice = useMemo(() => {
+    if (!products || products.length === 0) return 1000;
+    const prices = products.map((p) => p.discountPrice || p.price);
+    return Math.ceil(Math.max(...prices) / 10) * 10; // Round up to nearest 10
+  }, [products]);
 
   const categories = ["Top Wear", "Bottom Wear"];
 
@@ -53,14 +60,14 @@ const FilterSidebar = () => {
       material: params.material ? params.material.split(",") : [],
       brand: params.brand ? params.brand.split(",") : [],
       minPrice: params.minPrice || 0,
-      maxPrice: params.maxPrice || 100,
+      maxPrice: params.maxPrice || maxProductPrice,
     });
-    setPriceRange([0, params.maxPrice || 100]);
-  }, [searchParams]);
+    setPriceRange([0, params.maxPrice || maxProductPrice]);
+  }, [searchParams, maxProductPrice]);
 
   const handleFilterChange = (e) => {
     const { name, value, checked, type } = e.target;
-    const newFilters = { ...filters };
+    let newFilters = { ...filters };
 
     if (type === "checkbox") {
       if (checked) {
@@ -68,6 +75,9 @@ const FilterSidebar = () => {
       } else {
         newFilters[name] = newFilters[name].filter((item) => item !== value);
       }
+    } else if (type === "radio") {
+      // If clicking the same radio button, clear it
+      newFilters[name] = filters[name] === value ? "" : value;
     } else {
       newFilters[name] = value;
     }
@@ -81,16 +91,19 @@ const FilterSidebar = () => {
     Object.keys(newFilters).forEach((key) => {
       if (Array.isArray(newFilters[key]) && newFilters[key].length > 0) {
         params.append(key, newFilters[key].join(","));
-      } else if (newFilters[key]) {
+      } else if (
+        newFilters[key] &&
+        newFilters[key] !== 0 &&
+        newFilters[key] !== maxProductPrice
+      ) {
         params.append(key, newFilters[key]);
       }
     });
     setSearchParams(params);
-    navigate(`?${params.toString()}`);
   };
 
   const handlePriceChange = (e) => {
-    const newPrice = e.target.value;
+    const newPrice = parseInt(e.target.value);
     setPriceRange([0, newPrice]);
     const newFilters = { ...filters, minPrice: 0, maxPrice: newPrice };
     setFilters(newFilters);
@@ -105,12 +118,11 @@ const FilterSidebar = () => {
       material: [],
       brand: [],
       minPrice: 0,
-      maxPrice: 100,
+      maxPrice: maxProductPrice,
     };
     setFilters(clearedFilters);
-    setPriceRange([0, 100]);
+    setPriceRange([0, maxProductPrice]);
     setSearchParams(new URLSearchParams());
-    navigate("");
   };
 
   const hasActiveFilters =
@@ -119,7 +131,7 @@ const FilterSidebar = () => {
     filters.size.length > 0 ||
     filters.material.length > 0 ||
     filters.brand.length > 0 ||
-    filters.maxPrice < 100;
+    filters.maxPrice < maxProductPrice;
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
@@ -281,7 +293,7 @@ const FilterSidebar = () => {
             onChange={handlePriceChange}
             name="priceRange"
             min={0}
-            max={100}
+            max={maxProductPrice}
             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-gray-900"
           />
           <div className="flex justify-between items-center mt-3">
