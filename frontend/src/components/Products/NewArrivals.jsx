@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { Link } from "react-router";
-import axios from "axios";
+import { useGetNewArrivalsQuery } from "../../api/productsApi";
 
 const NewArrivals = () => {
   const scrollRef = useRef(null);
@@ -11,24 +11,14 @@ const NewArrivals = () => {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
-  const [newArrivals, setNewArrivals] = useState([]);
+  // Fetch with RTK Query
+  const {
+    data: newArrivals = [],
+    isLoading,
+    isError,
+  } = useGetNewArrivalsQuery();
 
-  useEffect(() => {
-    const fetchNewArrivals = async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/products/new-arrivals`
-        );
-        setNewArrivals(response.data);
-      } catch (error) {
-        console.error("Error fetching new arrivals:", error);
-      }
-    };
-
-    fetchNewArrivals();
-  }, []);
-
-  //   =======Mouse Directions
+  // Mouse drag logic
   const handleMouseDown = (e) => {
     setIsDragging(true);
     setStartX(e.pageX - scrollRef.current.offsetLeft);
@@ -42,35 +32,22 @@ const NewArrivals = () => {
     scrollRef.current.scrollLeft = scrollLeft - walk;
   };
 
-  const handleMouseUporLeave = (e) => {
-    setIsDragging(false);
-  };
+  const handleMouseUporLeave = () => setIsDragging(false);
 
   const scroll = (direction) => {
     const scrollAmount = direction === "left" ? -300 : 300;
-
     scrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
   };
 
-  //   ======update scroll buttons=========
   const updateScrollButtons = () => {
     const container = scrollRef.current;
-
     if (container) {
       const leftScroll = container.scrollLeft;
       const rightScrollable =
         container.scrollWidth > leftScroll + container.clientWidth;
-
       setCanScrollLeft(leftScroll > 0);
       setCanScrollRight(rightScrollable);
     }
-
-    // console.log({
-    //   scrollLeft: container.scrollLeft,
-    //   clientWidth: container.clientWidth,
-    //   containerScrollWidth: container.scrollWidth,
-    //   offsetLeft: scrollRef.current.offsetLeft,
-    // });
   };
 
   useEffect(() => {
@@ -82,16 +59,17 @@ const NewArrivals = () => {
     }
   }, [newArrivals]);
 
+  if (isLoading) return <p>Loading new arrivals...</p>;
+  if (isError) return <p>Error fetching new arrivals</p>;
+
   return (
     <section className="py-16 px-4 lg:px-0">
-      {/* ===========Section Heading=========== */}
       <div className="container mx-auto text-center mb-10 relative">
         <h2 className="text-3xl font-bold mb-4">Explore New Arrivals</h2>
         <p className="text-lg text-gray-600 mb-8">
           Discover the latest styles straight off the runway, freshly added to
           keep your wardrobe on the cutting edge of fashion.
         </p>
-        {/* ==========Slide Buttons========== */}
         <div className="absolute right-0 bottom-[-30px] flex space-x-2">
           <button
             onClick={() => scroll("left")}
@@ -113,7 +91,7 @@ const NewArrivals = () => {
           </button>
         </div>
       </div>
-      {/* Product slider */}
+
       <div
         ref={scrollRef}
         onMouseDown={handleMouseDown}

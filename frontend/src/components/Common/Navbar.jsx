@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, NavLink } from "react-router";
 import {
   HiOutlineUser,
@@ -32,7 +32,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="container mx-auto py-4 px-6 flex justify-between items-center">
+      <nav className="container mx-auto py-4 px-6 flex justify-between items-center sticky top-0 z-50">
         <div className="">
           <Link
             to="/"
@@ -42,6 +42,12 @@ const Navbar = () => {
           </Link>
         </div>
         <div className="hidden md:flex space-x-6 text-sm font-medium uppercase">
+          <NavLink
+            to="/collections/all"
+            className="text-gray-700 hover:text-black "
+          >
+            Collection
+          </NavLink>
           <NavLink
             to="/collections/all?gender=Men"
             className="text-gray-700 hover:text-black "

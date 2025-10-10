@@ -22,6 +22,18 @@ export const productsApi = createApi({
       providesTags: (result, error, id) => [{ type: "Products", id }],
     }),
 
+    // Get best seller products
+    getBestSellerProducts: builder.query({
+      query: () => `/products/best-seller`,
+      providesTags: ["Products"],
+    }),
+
+    // Get new arrivals
+    getNewArrivals: builder.query({
+      query: () => `/products/new-arrivals`,
+      providesTags: ["Products"],
+    }),
+
     // Add product (Admin)
     addProduct: builder.mutation({
       query: (product) => ({
@@ -56,6 +68,8 @@ export const productsApi = createApi({
 export const {
   useGetProductsQuery,
   useGetProductByIdQuery,
+  useGetBestSellerProductsQuery,
+  useGetNewArrivalsQuery,
   useAddProductMutation,
   useUpdateProductMutation,
   useDeleteProductMutation,
